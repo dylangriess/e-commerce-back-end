@@ -16,7 +16,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/:id", (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
     // find a single tag by its `id`
     const tagGet = await Tag.findByPk(req.params.id, {
@@ -33,19 +33,19 @@ router.get("/:id", (req, res) => {
   }
 });
 
-router.post("/", (req, res) => {
-	try {
-  // create a new tag
-		const tagPost = await Tag.create({
-			tag_name: req.body.tag_name,
-		});
-		res.status(200).json(tagPost);
-	} catch (err) {
-		res.status(400).json(err);
-	}
+router.post("/", async (req, res) => {
+  try {
+    // create a new tag
+    const tagPost = await Tag.create({
+      tag_name: req.body.tag_name,
+    });
+    res.status(200).json(tagPost);
+  } catch (err) {
+    res.status(400).json(err);
+  }
 });
 
-router.put("/:id", (req, res) => {
+router.put("/:id", async (req, res) => {
   try {
     const tagPut = await Tag.update(req.body, {
       // update a tag's name by its `id` value
@@ -54,9 +54,7 @@ router.put("/:id", (req, res) => {
       },
     });
     if (!tagPut) {
-      res
-        .status(404)
-        .json({ message: "Unable to update Tag with that ID!" });
+      res.status(404).json({ message: "Unable to update Tag with that ID!" });
       return;
     }
     res.status(200).json(tagPut);
@@ -65,7 +63,7 @@ router.put("/:id", (req, res) => {
   }
 });
 
-router.delete("/:id", (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
     // delete on tag by its `id` value
     const tagDelete = await Tag.destroy({
@@ -74,9 +72,7 @@ router.delete("/:id", (req, res) => {
       },
     });
     if (!tagDelete) {
-      res
-        .status(404)
-        .json({ message: "Unable to delete Tag with that ID!" });
+      res.status(404).json({ message: "Unable to delete Tag with that ID!" });
       return;
     }
     res.status(200).json(tagDelete);
